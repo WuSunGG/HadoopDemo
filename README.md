@@ -544,4 +544,103 @@ Deleted /output40
 		Bytes Written=0
 [root@hadoop10 ~]# 
 
+# id	pid	amount
+cat > order.txt <<EOF
+1001,01,1
+1002,02,2
+1003,03,3
+1004,01,4
+1005,02,5
+1006,03,6
+EOF
+
+# pd.txt 
+# pid	pname
+cat > product.txt <<EOF
+01,xiaomi
+02,huawei
+03,geli
+EOF
+
+hdfs dfs -rm /order.txt /product.txt 
+hdfs dfs -put order.txt product.txt /
+hdfs dfs -ls /order.txt /product.txt 
+hdfs dfs -rm -r /output50
+hadoop jar MapReduce-SecondarySort-1.0.0-SNAPSHOT.jar org.demo.cache.DistributedCacheDriver /order.txt /output50
+hdfs dfs -cat /output50/*
+
+
+
+[root@hadoop10 ~]# hdfs dfs -rm /order.txt /product.txt 
+20/07/16 21:31:48 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+Deleted /order.txt
+20/07/16 21:31:48 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+Deleted /product.txt
+[root@hadoop10 ~]# hdfs dfs -put order.txt product.txt /
+[root@hadoop10 ~]# hdfs dfs -ls /order.txt /product.txt 
+-rw-r--r--   3 root supergroup         60 2020-07-16 21:31 /order.txt
+-rw-r--r--   3 root supergroup         28 2020-07-16 21:31 /product.txt
+[root@hadoop10 ~]# hdfs dfs -rm -r /output50
+20/07/16 21:31:53 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+Deleted /output50
+[root@hadoop10 ~]# hadoop jar MapReduce-SecondarySort-1.0.0-SNAPSHOT.jar org.demo.cache.DistributedCacheDriver /order.txt /output50
+20/07/16 21:31:56 INFO client.RMProxy: Connecting to ResourceManager at hadoop11/192.168.5.11:8032
+20/07/16 21:31:56 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+20/07/16 21:31:56 INFO input.FileInputFormat: Total input paths to process : 1
+20/07/16 21:31:56 INFO mapreduce.JobSubmitter: number of splits:1
+20/07/16 21:31:56 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1594894717477_0031
+20/07/16 21:31:57 INFO impl.YarnClientImpl: Submitted application application_1594894717477_0031
+20/07/16 21:31:57 INFO mapreduce.Job: The url to track the job: http://hadoop11:8088/proxy/application_1594894717477_0031/
+20/07/16 21:31:57 INFO mapreduce.Job: Running job: job_1594894717477_0031
+20/07/16 21:32:02 INFO mapreduce.Job: Job job_1594894717477_0031 running in uber mode : false
+20/07/16 21:32:02 INFO mapreduce.Job:  map 0% reduce 0%
+20/07/16 21:32:07 INFO mapreduce.Job:  map 100% reduce 0%
+20/07/16 21:32:07 INFO mapreduce.Job: Job job_1594894717477_0031 completed successfully
+20/07/16 21:32:07 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=117666
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=155
+		HDFS: Number of bytes written=98
+		HDFS: Number of read operations=5
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Data-local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=2157
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=2157
+		Total vcore-milliseconds taken by all map tasks=2157
+		Total megabyte-milliseconds taken by all map tasks=2208768
+	Map-Reduce Framework
+		Map input records=6
+		Map output records=6
+		Input split bytes=95
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=41
+		CPU time spent (ms)=470
+		Physical memory (bytes) snapshot=171835392
+		Virtual memory (bytes) snapshot=2111307776
+		Total committed heap usage (bytes)=94371840
+	File Input Format Counters 
+		Bytes Read=60
+	File Output Format Counters 
+		Bytes Written=98
+[root@hadoop10 ~]# hdfs dfs -cat /output50/*
+1001,01,1	xiaomi
+1002,02,2	huawei
+1003,03,3	geli
+1004,01,4	xiaomi
+1005,02,5	huawei
+1006,03,6	geli
+[root@hadoop10 ~]# 
+
+
+
 ```

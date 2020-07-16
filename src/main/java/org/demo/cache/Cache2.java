@@ -1,7 +1,5 @@
 package org.demo.cache;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Scanner;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -19,11 +17,15 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.Scanner;
+
 /**
  * hadoop的全局共享文件 使用DistributedCached
  */
-public class Cache {
-    private static Logger logger = LoggerFactory.getLogger(Cache.class);
+public class Cache2 {
+    private static Logger logger = LoggerFactory.getLogger(Cache2.class);
 
     private static class FileMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
         Path path[] = null;
@@ -73,10 +75,10 @@ public class Cache {
 
 
     public static void main(String[] args) throws Exception {
-        JobConf conf = new JobConf(Cache.class);
+        JobConf conf = new JobConf(Cache2.class);
         Job job = new Job(conf, "Cache");
         DistributedCache.addCacheFile(new URI("hdfs://hadoop10:9000/cache.db"), job.getConfiguration());
-        job.setJarByClass(Cache.class);
+        job.setJarByClass(Cache2.class);
         System.out.println("运行模式：  " + conf.get("mapred.job.tracker"));
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(IntWritable.class);
