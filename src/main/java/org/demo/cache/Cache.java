@@ -23,14 +23,9 @@ import org.slf4j.LoggerFactory;
  * hadoop的全局共享文件 使用DistributedCached
  */
 public class Cache {
-
-
     private static Logger logger = LoggerFactory.getLogger(Cache.class);
 
-
     private static class FileMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
-
-
         Path path[] = null;
 
         /**
@@ -51,35 +46,24 @@ public class Cache {
             }
             scan.close();
             // System.out.println("size: "+path.length);
-
-
         }
 
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-
-
             // logger.info("Map里的任务");
             System.out.println("map里输出了");
             context.write(new Text(""), new IntWritable(0));
-
-
         }
-
 
         @Override
         protected void cleanup(Context context) throws IOException, InterruptedException {
             logger.info("清空任务了。。。。。。");
         }
-
-
     }
 
 
     private static class FileReduce extends Reducer<Object, Object, Object, Object> {
-
-
         @Override
         protected void reduce(Object arg0, Iterable<Object> arg1, Context arg2)
                 throws IOException, InterruptedException {
@@ -89,10 +73,7 @@ public class Cache {
 
 
     public static void main(String[] args) throws Exception {
-
-
         JobConf conf = new JobConf(Cache.class);
-
         Job job = new Job(conf, "Cache");
         DistributedCache.addCacheFile(new URI("hdfs://hadoop10:9000/cache.db"), job.getConfiguration());
         job.setJarByClass(Cache.class);
