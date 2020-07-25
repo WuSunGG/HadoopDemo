@@ -2,7 +2,7 @@
 MapReduce二次排序例子
 
 
-###二次排序
+## 二次排序
 (先按第一列排序，再按第二列排序)
 ####实现原理：
     map分发数据到reduce时，就会按key排序，即调用key的compareTo方法，
@@ -15,22 +15,23 @@ MapReduce二次排序例子
 * 重写WritableComparator，按第一个数分组，（IntPair中也要重写compareTo方法）
 
 
- 
+ ```
 输入：
 
-```
+
 5|67
 4|5
 4|3
-```
+ 
 
 输出：
 
-```
+ 
 4|3
 4|5
 5|67
-```
+ 
+ 
 [root@hadoop10 ~]# cat secondarysort.txt 
 5|67
 4|5
@@ -40,7 +41,6 @@ hdfs dfs -put secondarysort.txt /
 hdfs dfs -ls secondarysort.txt  
 hadoop jar  MapReduce-SecondarySort-1.0.0-SNAPSHOT.jar org.demo.secondarysort.SortDriver -D input=/secondarysort.txt -D output=/output22 -D mapreduce.job.reduces=4
 hdfs dfs -cat /output22/*
-``` 
 [root@hadoop10 ~]# hadoop jar  MapReduce-SecondarySort-1.0.0-SNAPSHOT.jar org.demo.secondarysort.SortDriver -D input=/secondarysort.txt -D output=/output22 -D mapreduce.job.reduces=4
 input:/secondarysort.txt
 output:/output22
@@ -122,6 +122,9 @@ output:/output22
 4	5
 5	67
 
+```
+## counter
+```  
 hdfs dfs -rm /counter.txt
 hdfs dfs -ls /counter.txt
 cat >counter.txt <<EOF
@@ -134,7 +137,8 @@ demo9,22,male,usa
 EOF
 hdfs dfs -put counter.txt /
 hdfs dfs -ls /counter.txt  
-hadoop jar  MapReduce-SecondarySort-1.0.0-SNAPSHOT.jar org.demo.counter.Counter /counter.txt /output24  
+hadoop jar  MapReduce-SecondarySort-1.0.0-SNAPSHOT.jar org.demo.counter.Counter /counter.txt /output24
+hdfs dfs -cat  /output24/*  
 
 
 
@@ -270,6 +274,7 @@ ls: `/counter.txt': No such file or directory
 
 ```
 # join
+```
 输入：
 action表：
 product1"trade1
@@ -453,8 +458,8 @@ tb,lucifer,1800
 tb,mike,1800
 xxx,aaa,null
 [root@hadoop10 ~]# 
-
 ```
+ 
 
 # 分布式缓存
 https://www.cnblogs.com/oftenlin/p/3592005.html
