@@ -1,4 +1,4 @@
-package org.demo.cache;
+package org.demo.test;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
